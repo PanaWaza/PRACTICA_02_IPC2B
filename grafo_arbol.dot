@@ -1,0 +1,7 @@
+digraph Arbol {
+  node [shape=circle];
+  "Bohemian Rhapsody" -> "Blinding Lights";
+  "Blinding Lights" -> "Andante";
+  "Bohemian Rhapsody" -> "Take Five";
+  "Take Five" -> "Clair de Lune";
+}
