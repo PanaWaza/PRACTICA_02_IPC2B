@@ -35,3 +35,24 @@ pero después queda cacheado.
 4. Las pestañas de abajo muestran los `.png` generados por Graphviz de la cola
    y del árbol, y se regeneran cada vez que cambia el estado (`ActualizarTodo()`).
 
+## Qué cambió respecto a tu código con `System.Windows.Forms`
+
+| Antes (WinForms)            | Ahora (Eto.Forms)              |
+|------------------------------|---------------------------------|
+| `System.Windows.Forms.ListBox` | `Eto.Forms.ListBox`          |
+| `PictureBox`                  | `ImageView`                    |
+| `System.Drawing.Image`        | `Eto.Drawing.Bitmap`           |
+| `MessageBox.Show(...)` (WinForms) | `MessageBox.Show(...)` (Eto, mismo nombre, distinto namespace) |
+| `MessageBoxIcon.Error`        | `MessageBoxType.Error`         |
+
+Toda tu lógica de `NodoCola`, `NodoArbol`, `ColaReproduccion.Encolar/Desencolar`
+y `ArbolBinario.Insertar/Buscar` quedó **exactamente igual** — eso no depende
+para nada del framework gráfico, así que no perdiste nada de lo que ya tenías.
+
+## Si el auxiliar exige literalmente "Windows Forms"
+
+Este proyecto usa Eto.Forms porque WinForms no corre de forma nativa en Linux.
+Si el auxiliar confirma que solo acepta WinForms real, la misma estructura de
+carpetas (`Modelos/`) se reutiliza casi sin cambios en un proyecto de
+Windows Forms — lo único que cambiaría es `MainForm.cs` y las dos líneas de
+`ListBox`/`PictureBox`/`MessageBox` que aquí están en su versión Eto.

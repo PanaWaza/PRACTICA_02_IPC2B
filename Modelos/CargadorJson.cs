@@ -3,7 +3,6 @@ using System.Text.Json;
 
 namespace Modelos
 {
-
     public static class CargadorJson
     {
         public static void CargarCanciones(string rutaArchivo, ColaReproduccion cola, ArbolBinario arbol)

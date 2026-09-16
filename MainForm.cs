@@ -8,8 +8,9 @@ namespace ReproductorMusica
 {
     public class MainForm : Form
     {
-        private readonly ColaReproduccion cola = new ColaReproduccion();
-        private readonly ArbolBinario arbol = new ArbolBinario();
+
+        private ColaReproduccion cola = new ColaReproduccion();
+        private ArbolBinario arbol = new ArbolBinario();
 
         private readonly ListBox listBoxCola = new ListBox { Height = 180 };
         private readonly ListBox listBoxArbol = new ListBox { Height = 180 };
@@ -19,7 +20,8 @@ namespace ReproductorMusica
         private readonly ImageView imageViewCola = new ImageView { Size = new Size(480, 260) };
         private readonly ImageView imageViewArbol = new ImageView { Size = new Size(480, 260) };
 
-        private const string RutaJson = "canciones.json";
+        private string rutaArchivoActual = null; // recuerda el último archivo cargado
+        private readonly Label lblArchivoActual = new Label { Text = "Ningún archivo cargado." };
 
         public MainForm()
         {
@@ -27,7 +29,7 @@ namespace ReproductorMusica
             ClientSize = new Size(760, 640);
             Padding = 12;
 
-            var btnCargar = new Button { Text = "Cargar canciones.json" };
+            var btnCargar = new Button { Text = "Seleccionar archivo JSON..." };
             btnCargar.Click += (s, e) => CargarCanciones();
 
             var btnReproducir = new Button { Text = "Reproducir siguiente" };
@@ -43,6 +45,7 @@ namespace ReproductorMusica
             var layout = new DynamicLayout { DefaultSpacing = new Size(8, 8), Padding = 0 };
 
             layout.AddRow(btnCargar, btnReproducir, lblTiempoTotal);
+            layout.AddRow(lblArchivoActual);
 
             layout.AddRow(
                 new GroupBox { Text = "Cola de reproducción (orden FIFO)", Content = listBoxCola },
@@ -60,16 +63,42 @@ namespace ReproductorMusica
 
         private void CargarCanciones()
         {
-            if (!File.Exists(RutaJson))
+            // Equivalente a System.Windows.Forms.OpenFileDialog
+            var dialogo = new OpenFileDialog
+            {
+                Title = "Seleccionar archivo de canciones (JSON)",
+                Filters = { new FileFilter("Archivos JSON (*.json)", ".json") },
+                CheckFileExists = true
+            };
+
+            // Si ya se había cargado un archivo antes, abre el diálogo en esa misma carpeta
+            if (!string.IsNullOrEmpty(rutaArchivoActual))
+                dialogo.Directory = new Uri(Path.GetDirectoryName(rutaArchivoActual));
+
+            DialogResult resultado = dialogo.ShowDialog(this);
+            if (resultado != DialogResult.Ok)
+                return; // el usuario canceló, no hacemos nada
+
+            string rutaSeleccionada = dialogo.FileName;
+
+            try
+            {
+                // Reiniciamos cola y árbol para que la nueva carga no se mezcle con la anterior
+                cola = new ColaReproduccion();
+                arbol = new ArbolBinario();
+
+                CargadorJson.CargarCanciones(rutaSeleccionada, cola, arbol);
+                rutaArchivoActual = rutaSeleccionada;
+                lblArchivoActual.Text = $"Archivo cargado: {Path.GetFileName(rutaSeleccionada)}";
+
+                ActualizarTodo();
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(this,
-                    $"No se encontró '{RutaJson}' en:\n{Directory.GetCurrentDirectory()}",
-                    "Archivo no encontrado", MessageBoxButtons.OK, MessageBoxType.Warning);
-                return;
+                    $"No se pudo leer el archivo seleccionado.\n\nDetalles: {ex.Message}",
+                    "Error al cargar JSON", MessageBoxButtons.OK, MessageBoxType.Error);
             }
-
-            CargadorJson.CargarCanciones(RutaJson, cola, arbol);
-            ActualizarTodo();
         }
 
         private void ReproducirSiguiente()
@@ -103,6 +132,7 @@ namespace ReproductorMusica
                 : "No se encontró esa canción.";
         }
 
+        // Refresca listas, tiempo total y los dos grafos de Graphviz "en tiempo real"
         private void ActualizarTodo()
         {
             cola.MostrarEnListBox(listBoxCola);

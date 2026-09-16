@@ -1,8 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using Eto.Drawing;  
-using Eto.Forms;  
+using Eto.Drawing;  // en vez de System.Drawing
+using Eto.Forms;    // en vez de System.Windows.Forms
 
 namespace Modelos
 {
@@ -16,7 +16,7 @@ namespace Modelos
                 string dotPath = $"{nombreArchivo}.dot";
                 string imgPath = $"{nombreArchivo}.png";
 
-                // 1. Guardar en DOT archivo temporal
+                // Guardar DOT en un archivo temporal
                 File.WriteAllText(dotPath, contenidoDot);
 
                 ProcessStartInfo startInfo = new ProcessStartInfo
@@ -36,6 +36,7 @@ namespace Modelos
 
                 if (File.Exists(imgPath))
                 {
+                    // Liberar la imagen previa del control para evitar excepciones de archivo en uso
                     if (imageView.Image != null)
                     {
                         imageView.Image.Dispose();
