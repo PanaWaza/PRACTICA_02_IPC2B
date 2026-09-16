@@ -16,11 +16,9 @@ namespace Modelos
                 string dotPath = $"{nombreArchivo}.dot";
                 string imgPath = $"{nombreArchivo}.png";
 
-                // 1. Guardar el código DOT en un archivo temporal
+                // Guardar DOT en un archivo temporal
                 File.WriteAllText(dotPath, contenidoDot);
 
-                // 2. Configurar la ejecución del comando 'dot' de Graphviz.
-                //    En Linux: sudo apt install graphviz (debe quedar en el PATH).
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = "dot",
@@ -36,7 +34,6 @@ namespace Modelos
                     process.WaitForExit();
                 }
 
-                // 3. Cargar la imagen generada en el ImageView evitando bloqueos de archivo
                 if (File.Exists(imgPath))
                 {
                     // Liberar la imagen previa del control para evitar excepciones de archivo en uso

@@ -8,12 +8,10 @@ namespace ReproductorMusica
 {
     public class MainForm : Form
     {
-        // No son readonly porque al elegir un archivo nuevo se recrean desde cero,
-        // para no mezclar canciones de una carga anterior con la nueva.
+
         private ColaReproduccion cola = new ColaReproduccion();
         private ArbolBinario arbol = new ArbolBinario();
 
-        // Controles (equivalentes a los que arrastrarías en el diseñador de WinForms)
         private readonly ListBox listBoxCola = new ListBox { Height = 180 };
         private readonly ListBox listBoxArbol = new ListBox { Height = 180 };
         private readonly Label lblTiempoTotal = new Label { Text = "Tiempo total: 0 min" };

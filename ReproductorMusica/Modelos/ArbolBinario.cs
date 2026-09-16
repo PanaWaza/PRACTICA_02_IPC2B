@@ -12,7 +12,6 @@ namespace Modelos
             raiz = null;
         }
 
-        // 1. Insertar una canción en el árbol (ordenada alfabéticamente por Título)
         public void Insertar(Cancion cancion)
         {
             raiz = InsertarRec(raiz, cancion);
@@ -32,7 +31,6 @@ namespace Modelos
             return nodo;
         }
 
-        // 2. Buscar una canción por Título
         public Cancion Buscar(string titulo)
         {
             return BuscarRec(raiz, titulo);
@@ -52,7 +50,6 @@ namespace Modelos
                 return BuscarRec(nodo.Derecho, titulo);
         }
 
-        // 3. Renderizar en Interfaz Gráfica (ListBox de Eto.Forms) sin usar List<T> ni arreglos
         public void MostrarEnListBox(ListBox listBox)
         {
             listBox.Items.Clear();
@@ -69,7 +66,6 @@ namespace Modelos
             }
         }
 
-        // 4. Imprimir por Consola (Útil para pruebas o depuración)
         public void RecorridoInOrden()
         {
             if (raiz == null)

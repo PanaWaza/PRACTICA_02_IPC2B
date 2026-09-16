@@ -77,7 +77,6 @@ namespace Modelos
             return total;
         }
 
-        // Recorrido directo sin usar List<T> ni arreglos
         public void ImprimirTodas()
         {
             if (EstaVacia())
@@ -97,10 +96,6 @@ namespace Modelos
             }
         }
 
-        // Recorre la cola y carga cada elemento en el ListBox de Eto.Forms.
-        // Eto.Forms.ListBox.Items.Add acepta directamente un string (crea un
-        // ListItem internamente), así que usamos el ToString() de Cancion,
-        // igual que hacías con el ListBox de WinForms.
         public void MostrarEnListBox(ListBox listBox)
         {
             listBox.Items.Clear();
