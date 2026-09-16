@@ -20,13 +20,20 @@ namespace Modelos
         private NodoArbol InsertarRec(NodoArbol nodo, Cancion cancion)
         {
             if (nodo == null)
+            {
                 return new NodoArbol(cancion);
+            }
 
             int comparacion = string.Compare(cancion.Titulo, nodo.Cancion.Titulo, StringComparison.OrdinalIgnoreCase);
+
             if (comparacion < 0)
+            {
                 nodo.Izquierdo = InsertarRec(nodo.Izquierdo, cancion);
+            }
             else if (comparacion > 0)
+            {
                 nodo.Derecho = InsertarRec(nodo.Derecho, cancion);
+            }
 
             return nodo;
         }
@@ -39,15 +46,24 @@ namespace Modelos
         private Cancion BuscarRec(NodoArbol nodo, string titulo)
         {
             if (nodo == null)
+            {
                 return null;
+            }
 
             int comparacion = string.Compare(titulo, nodo.Cancion.Titulo, StringComparison.OrdinalIgnoreCase);
+
             if (comparacion == 0)
+            {
                 return nodo.Cancion;
+            }
             else if (comparacion < 0)
+            {
                 return BuscarRec(nodo.Izquierdo, titulo);
+            }
             else
+            {
                 return BuscarRec(nodo.Derecho, titulo);
+            }
         }
 
         public void MostrarEnListBox(ListBox listBox)

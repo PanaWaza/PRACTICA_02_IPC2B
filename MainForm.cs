@@ -11,7 +11,6 @@ namespace ReproductorMusica
         private readonly ColaReproduccion cola = new ColaReproduccion();
         private readonly ArbolBinario arbol = new ArbolBinario();
 
-        // Controles (equivalentes a los que arrastrarías en el diseñador de WinForms)
         private readonly ListBox listBoxCola = new ListBox { Height = 180 };
         private readonly ListBox listBoxArbol = new ListBox { Height = 180 };
         private readonly Label lblTiempoTotal = new Label { Text = "Tiempo total: 0 min" };
@@ -104,7 +103,6 @@ namespace ReproductorMusica
                 : "No se encontró esa canción.";
         }
 
-        // Refresca listas, tiempo total y los dos grafos de Graphviz "en tiempo real"
         private void ActualizarTodo()
         {
             cola.MostrarEnListBox(listBoxCola);

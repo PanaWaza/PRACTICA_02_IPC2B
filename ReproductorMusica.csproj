@@ -7,6 +7,7 @@
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
+    <!-- agregar lo correspondiente a Eto.Forms -->
   <ItemGroup>
     <PackageReference Include="Eto.Forms" Version="2.8.3" />
     <PackageReference Include="Eto.Platform.Gtk" Version="2.8.3" />
